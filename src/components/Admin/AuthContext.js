@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
 	const navigate = useNavigate();
 	const [user, setUser] = useState(null);
 	const [token, setToken] = useState(null);
-	const url = "http://127.0.0.1:8000/api/v1/logout";
+	const url = "http://localhost:8000/api/v1/logout";
 	const hs = { Accept: "application/json", Authorization: `Bearer ${token}` };
 	const req = { method: "POST", headers: hs };
 
