@@ -1,6 +1,6 @@
 import React from "react";
  import {Link} from 'react-router-dom';
-
+ 
 class AddCountry extends React.Component {
     constructor(props) {
         super(props);
@@ -15,11 +15,11 @@ class AddCountry extends React.Component {
   
 
     create(e) {
-        fetch("http://127.0.0.1:8000/api/country", {
+        fetch("http://127.0.0.1:8000/api/v1/country", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+       
             },
             body: JSON.stringify({
                 title: this.state.title,

@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from 'react-router-dom';
-
+ 
 class AddCustomer extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ class AddCustomer extends React.Component {
     }
   
     create(e) {
-        fetch("http://127.0.0.1:8000/api/customers", {
+        fetch("http://127.0.0.1:8000/api/v1/customers", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

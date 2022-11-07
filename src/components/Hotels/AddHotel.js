@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from 'react-router-dom';
+//  import { AuthContext } from "../../components/Admin/AuthContext";
 
 class AddTown extends React.Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class AddTown extends React.Component {
     }
 
     create(e) {
-        fetch("http://127.0.0.1:8000/api/hotel/", {
+        fetch("http://127.0.0.1:8000/api/v1/hotel/", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

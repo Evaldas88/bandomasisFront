@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Link } from 'react-router-dom';
- 
+import { AuthContext } from "../../components/Admin/AuthContext";
+
 function Customers() {
 
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [customers, setCustomer] = useState([]);
+    const auth = useContext(AuthContext);
 
     useEffect(() => {
         getCustomers();
     }, [])
     function getCustomers() {
-        fetch("http://127.0.0.1:8000/api/customers")
+        fetch("http://127.0.0.1:8000/api/v1/customers")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -25,7 +27,11 @@ function Customers() {
     }
 
     function deleteCustomer(id) {
-        fetch("http://localhost:8000/api/customers/" + id, { method: 'DELETE' })
+        fetch("http://localhost:8000/api/v1/customers/" + id, { method: 'DELETE',
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${auth.getToken()}`,
+          },  })
             .then((response) => {
                 // console.log(response);
                 if (response.status === 204) {

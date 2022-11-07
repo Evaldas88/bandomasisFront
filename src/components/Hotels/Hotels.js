@@ -1,16 +1,23 @@
 // READ, DELETE Towns
 
-import React, { useState, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
- 
+import { AuthContext } from "../../components/Admin/AuthContext";
+
 function Towns() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [hotels, setHotels] = useState([]);
     const navigate = useNavigate();
-
+    const auth = useContext(AuthContext);
+    const hs = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.getToken()}`,
+      };
+ 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/hotel")
+        fetch("http://127.0.0.1:8000/api/v1/hotel")
             .then((res) => res.json())
             .then(
                 (result) => {
@@ -26,7 +33,10 @@ function Towns() {
     }, []);
 
     function deleteHotel(id) {
-        fetch("http://127.0.0.1:8000/api/hotel/" + id, { method: "DELETE" })
+        fetch("http://127.0.0.1:8000/api/v1/hotel/" + id, { method: "DELETE",
+        method: 'PUT',
+        headers: hs,
+     })
         .then(
             (response) => {
                 console.log(response);

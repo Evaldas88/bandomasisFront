@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useParams,useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
+ import { AuthContext } from "../../components/Admin/AuthContext";
 
 function EditCustomer() {
 
@@ -8,11 +9,18 @@ function EditCustomer() {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [hotel_id, setHotel_id] = useState('');
+    const auth = useContext(AuthContext);
+    const hs = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.getToken()}`,
+      };
         const navigate = useNavigate();
+
 
     const { id } = useParams();
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/customers/` + id)
+        fetch(`http://127.0.0.1:8000/api/v1/customers/` + id)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -31,18 +39,14 @@ function EditCustomer() {
             'name': fname,
             'surname': lname,
             'email': email,
-            
             'phone': phone,
             'hotel_id': hotel_id,
                 }
 
-        fetch(`http://localhost:8000/api/customers/${id}`, {
+        fetch(`http://localhost:8000/api/v1/customers/${id}`, {
             method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers: hs,
+      body: JSON.stringify(data),
         }).then((result) => {
             result.json().then((resp) => {
                 console.warn(resp)
@@ -55,7 +59,7 @@ function EditCustomer() {
                 const [hotels, setHotels] = useState([]);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/hotel")
+        fetch("http://127.0.0.1:8000/api/v1/hotel")
             .then((res) => res.json())
             .then(
                 (result) => {

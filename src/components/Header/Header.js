@@ -1,21 +1,58 @@
 import { Link } from "react-router-dom";
- import React from 'react';
+ import React, { useContext } from "react";
+import { AuthContext } from "../Admin/AuthContext";
+  
 
-function Header(){
+const Header = () => { 
+    const auth = useContext(AuthContext);
     return (
-        <nav className="navbar navbar-expand-xl navbar-expand-lg bg-dark">
-            <Link className="navbar-brand" to="/">   </Link>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" 
-                    data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="navbar-collapse collapse" id="navbarNav">
-                <ul className="navbar-nav">
-                    <li className="nav-item"><Link className="nav-link" to="/ " style={{color:"orange"}}>Countries</Link></li>
-                    <li className="nav-item"><Link className="nav-link" to="/hotels" style={{color:"orange"}}>Hotels</Link></li>
-                    <li className="nav-item"><Link className="nav-link" to="/customers" style={{color:"orange"}}>Customers</Link></li>
-                </ul>
-            </div>
-        </nav>)
-}
-export default Header;
+      <header className="navbar-dark bg-dark">
+        <div className="container d-flex justify-content-between">
+          <Link to="/" className="navbar-brand text-light nav-link">
+            <span className="fs-4">Hotels</span>
+          </Link>
+  
+          <ul className="nav nav-pills">
+            <li className="nav-item">
+              <Link to="/" className="nav-link text-light">
+                country
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/customers" className="nav-link text-light">
+              customers
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/hotels" className="nav-link text-light">
+              Hotels
+              </Link>
+            </li>
+            
+            {auth.isLoggedin() ? (
+              <li className="nav-item ms-3">
+                <Link onClick={()=> auth.logout()} className="nav-link text-light">
+                  Logout
+                </Link>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link text-light">
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/register" className="nav-link text-light">
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </header>
+    );}
+  
+  export default Header;
+ 

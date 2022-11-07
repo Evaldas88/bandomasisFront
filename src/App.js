@@ -13,14 +13,14 @@ import Customers from "./components/Customers/Customers";
 import AddCustomer from "./components/Customers/AddCustomer";
 import EditCustomer from "./components/Customers/EditCustomer";
  
-// import { AuthProvider } from "./components/Admin/AuthContext";
-// import Register from "./components/Admin/Register";
-// import Login from "./components/Admin/Login";
+import { AuthProvider } from "./components/Admin/AuthContext";
+import Register from "./components/Admin/Register";
+import Login from "./components/Admin/Login";
 
 function App() {
   return (
       <BrowserRouter>
-              {/* <AuthProvider> */}
+              <AuthProvider>
           < Header />
           <Routes>
               <Route path="/" element={<Countries />} />
@@ -31,11 +31,11 @@ function App() {
               <Route path="/editCustomer/:id" element={<EditCustomer />} />
               <Route path="/hotels" element={<Hotels />} />
               <Route path="/addHotel" element={<AddHotel />} />
-               {/* <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} /> */}
               <Route path="/editHotel/:id" element={<EditHotel />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
           </Routes>
-          {/* </AuthProvider> */}
+          </AuthProvider>
       </BrowserRouter>
   );
 }

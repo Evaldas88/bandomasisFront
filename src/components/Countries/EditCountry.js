@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../components/Admin/AuthContext";
 
  
 function EditCountry() {
@@ -8,9 +9,15 @@ function EditCountry() {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
      const [season_weather, setSeason_weather] = useState('');
-
+     const auth = useContext(AuthContext);
+     const hs = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.getToken()}`,
+      };
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/country/` + id)
+        
+        fetch(`http://127.0.0.1:8000/api/v1/country/` + id)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -28,13 +35,10 @@ function EditCountry() {
             'title': title,
             'season_weather': season_weather,
         }
-        fetch(`http://localhost:8000/api/country/${id}`, {
+        fetch(`http://localhost:8000/api/v1/country/${id}`, {
             method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            headers: hs,
+      body: JSON.stringify(data),
         }).then((result) => {
             result.json().then((resp) => {
                 console.warn(resp)

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../components/Admin/AuthContext";
 
 function EditTown() {
     const navigate = useNavigate();
@@ -11,10 +12,15 @@ function EditTown() {
     const [price, setPrice] = useState('');
      const [country_id, setCountry_id] = useState('');
     const { id } = useParams();
-
+    const auth = useContext(AuthContext);
+    const hs = {
+       Accept: "application/json",
+       "Content-Type": "application/json",
+       Authorization: `Bearer ${auth.getToken()}`,
+     };
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/hotel/` + id)
+        fetch(`http://127.0.0.1:8000/api/v1/hotel/` + id)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -37,13 +43,11 @@ function EditTown() {
             'price': price,
             'country_id': country_id,
         }
-        fetch(`http://localhost:8000/api/hotel/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+        fetch(`http://localhost:8000/api/v1/hotel/${id}`, 
+            {
+                method: 'PUT',
+                headers: hs,
+                 body: JSON.stringify(data),
         }).then((result) => {
             result.json().then((resp) => {
                 console.warn(resp)
@@ -59,7 +63,7 @@ function EditTown() {
         getCountries();
     }, [])
     function getCountries() {
-        fetch("http://127.0.0.1:8000/api/country")
+        fetch("http://127.0.0.1:8000/api/v1/country")
             .then((res) => res.json())
             .then(
                 (result) => {
