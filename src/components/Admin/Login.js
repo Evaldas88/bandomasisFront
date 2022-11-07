@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 const Login = () => {
-	const url =  'http://127.0.0.1:8000/';
+	const url =  'http://localhost:8000/';
 	const hs = { Accept: "application/json", "Content-Type": "application/json" };
 	const [creds, setCreds] = useState({ email: "", password: "" });
 	const [err, setErr] = useState(null);

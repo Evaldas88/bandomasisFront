@@ -16,6 +16,28 @@ function Towns() {
         Authorization: `Bearer ${auth.getToken()}`,
       };
  
+
+      function deleteHotel(id) {
+        fetch("http://127.0.0.1:8000/api/v1/hotel/" + id, { method: "DELETE",
+        headers: {
+
+            Accept: "application/json",
+
+            Authorization: `Bearer ${auth.getToken()}`,
+
+          }, })
+    
+        .then(
+            (response) => {
+                console.log(response);
+                if (response.status === 204) {
+                    const remaining = hotels.filter((p) => id !== p.id);
+                    setHotels(remaining);
+                    alert("Deleted successful.");
+                }  
+            }
+        );
+    }
     useEffect(() => {
         fetch("http://127.0.0.1:8000/api/v1/hotel")
             .then((res) => res.json())
@@ -32,22 +54,7 @@ function Towns() {
             );
     }, []);
 
-    function deleteHotel(id) {
-        fetch("http://127.0.0.1:8000/api/v1/hotel/" + id, { method: "DELETE",
-        method: 'PUT',
-        headers: hs,
-     })
-        .then(
-            (response) => {
-                console.log(response);
-                if (response.status === 200) {
-                    const remaining = hotels.filter((p) => id !== p.id);
-                    setHotels(remaining);
-                    alert("Deleted successful.");
-                }  
-            }
-        );
-    }
+   
 
     const editHotel = id => {
         navigate   ('/editHotel/' + id)

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 
 const Register = () => {
-	const url = `http://127.0.0.1:8000/api/v1/register`;
+	const url = `http://localhost:8000/api/v1/register`;
 	const hs = { Accept: "application/json", "Content-Type": "application/json" };
 	const [userInfo, setUserInfo] = useState({ name: "", email: "", password: "", password_confirmation: "" });
 	const [err, setErr] = useState(null);

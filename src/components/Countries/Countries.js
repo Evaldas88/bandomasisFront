@@ -11,13 +11,18 @@ function Countries() {
     
 
     function deleteCountry(id) {
-        fetch("http://127.0.0.1:8000/api/v1/country/" + id, { method: "DELETE",
+        fetch("http://localhost:8000/api/v1/country/" + id,  { method: "DELETE",
         headers: {
+
             Accept: "application/json",
+
             Authorization: `Bearer ${auth.getToken()}`,
+
           }, })
-            .then((response) => {
-                if (response.status === 204) {
+          .then((response) => {
+            // console.log(response);
+
+            if (response.status === 200) {
                     const remaining = countries.filter((p) => id !== p.id);
                     setCountries(remaining);
                     alert("Deleted successful.");
@@ -28,7 +33,7 @@ function Countries() {
 
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/v1/country")
+        fetch("http://localhost:8000/api/v1/country")
             .then((res) => res.json())
             .then(
                 (result) => {
@@ -41,7 +46,7 @@ function Countries() {
                     setIsLoaded(true);
                 }
             );
-    }, [isLoaded])
+    }, [])
 
 
 
