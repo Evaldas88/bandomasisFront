@@ -7,8 +7,7 @@ function EditCustomer() {
     const [lname, setLname] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [towns, setTowns] = useState([]);
-    const [town_id, setTown_id] = useState('');
+    const [hotel_id, setHotel_id] = useState('');
         const navigate = useNavigate();
 
     const { id } = useParams();
@@ -21,10 +20,10 @@ function EditCustomer() {
                     setLname(result.surname)
                     setEmail(result.email)
                     setPhone(result.phone)
-                    setTown_id(result.town_id)                }
+                    setHotel_id(result.hotel_id)
+                }
             )
     }, [id])
-
     const handleSubmit = event => {
         event.preventDefault();
         var data = {
@@ -32,9 +31,11 @@ function EditCustomer() {
             'name': fname,
             'surname': lname,
             'email': email,
+            
             'phone': phone,
-            'town_id': town_id,
+            'hotel_id': hotel_id,
                 }
+
         fetch(`http://localhost:8000/api/customers/${id}`, {
             method: 'PUT',
             headers: {
@@ -51,13 +52,15 @@ function EditCustomer() {
     }
 
   
+                const [hotels, setHotels] = useState([]);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/town")
+        fetch("http://127.0.0.1:8000/api/hotel")
             .then((res) => res.json())
             .then(
                 (result) => {
-                    setTowns(result);
+                    setHotels(result);
+                    console.log(result)
                     
                 }
             );
@@ -77,17 +80,16 @@ function EditCustomer() {
                         <input type="text" value={email} onChange={(e) => { setEmail(e.target.value) }} /> <br />
                         <label>Phone:</label>
                         <input type="text" value={phone} onChange={(e) => { setPhone(e.target.value) }} /> <br />
-                        <label>Town id:</label>
-                        <select value={town_id}
-                            onChange={(e) => setTown_id(e.target.value)}>
-                            {towns.map((town) => (
-                                <option key={town.id} value={town.id}>
-                                {town.town_title}
+                        <label>Hotel id:</label>
+                        <select value={hotel_id}
+                            onChange={(e) => setHotel_id(e.target.value)}>
+                            {hotels.map((hotel) => (
+                                <option key={hotel.id} value={hotel.id}>
+                                {hotel.hotel_title}
                             </option>
                             ))}
                         </select>
-                        {/* <input type="text" value={town_id} onChange={(e) => { setTown_id(e.target.value) }} /> <br /> */}
-                        <button type="submit" className="upaddbtn btn btn-dark">Update Customer</button>
+                         <button type="submit" className="upaddbtn btn btn-dark">Update Customer</button>
                 </form>
                 </div>
                 </div>

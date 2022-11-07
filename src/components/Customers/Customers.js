@@ -56,7 +56,7 @@ function Customers() {
                                 <th>Surname</th>
                                 <th>Email</th>
                                 <th>Phone</th>
-                                <th>Chosen town</th>
+                                <th>Chosen hotel</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -68,7 +68,7 @@ function Customers() {
                                     <td>{customer.surname}</td>
                                     <td>{customer.email}</td>
                                     <td>{customer.phone}</td>
-                                    <td>{customer.town_title}</td>
+                                    <td>{customer.hotel_title}</td>
                                     <td>
                                         <button onClick={(e) => deleteCustomer(customer.id, e)} 
                                             className="btn btn-dark">

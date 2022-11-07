@@ -10,8 +10,8 @@ class AddCustomer extends React.Component {
             surname: "",
             email: "",
             phone: "",
-            country_id: "",
-        };
+            hotel_id: "",
+                };
         this.create = this.create.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -28,8 +28,8 @@ class AddCustomer extends React.Component {
                 surname: this.state.surname,
                 email: this.state.email,
                 phone: this.state.phone,
-                country_id: this.state.country_id,
-            }),
+                hotel_id: this.state.hotel_id,
+                        }),
         })
             .then((response) => response.json())
             .then((response) => {
@@ -104,16 +104,16 @@ class AddCustomer extends React.Component {
                                     required
                                 />
                             </label>
-                            <label htmlFor="country_id">
-                            Town id:
-                                <input
-                                    name="country_id"
-                                    id="country_id"
+                            <label htmlFor="hotel_id">
+                            Hotel id:
+                            <input
+                                    name="hotel_id"
+                                    id="hotel_id"
                                     type="number"
                                     className="form-control"
-                                    value={this.state.country_id}
+                                    value={this.state.hotel_id}
                                     onChange={(e) =>
-                                        this.handleChange({ country_id: e.target.value })
+                                        this.handleChange({ hotel_id: e.target.value })
                                     }
                                     required
                                 />
