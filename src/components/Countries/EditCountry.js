@@ -7,8 +7,7 @@ function EditCountry() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
-    const [distance, setDistance] = useState('');
-    const [description, setDescription] = useState('');
+     const [season_weather, setSeason_weather] = useState('');
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/country/` + id)
@@ -16,8 +15,7 @@ function EditCountry() {
             .then(
                 (result) => {
                     setTitle(result.title)
-                    setDescription(result.description)
-                    setDistance(result.distance)
+                    setSeason_weather(result.season_weather)
 
                 }
             )
@@ -28,8 +26,7 @@ function EditCountry() {
         var data = {
             'id': id,
             'title': title,
-            'description': description,
-            'distance': distance,
+            'season_weather': season_weather,
         }
         fetch(`http://localhost:8000/api/country/${id}`, {
             method: 'PUT',
@@ -47,27 +44,25 @@ function EditCountry() {
     }
 
     
+
     return (
         <div className="container">
-            <div className="row justify-content-center">
+                        <div className="row justify-content-center">
                 <div className="col-md-4">
-
-                    <legend className="text-center">Update section</legend>
-                    <form className="d-flex flex-column" onSubmit={handleSubmit}>
-                        <label>Title:</label>
-                        <input value={title}
-                            onChange={(e) => { setTitle(e.target.value) }} /> <br />
-                        <label>description:</label>
-                        <input value={description}
-                            onChange={(e) => { setDescription(e.target.value) }} /> <br />
-                            <label>distance:</label>
-                        <input value={distance}
-                            onChange={(e) => { setDistance(e.target.value) }} /> <br />
-                        <button type="submit" className="upaddbtn btn btn-dark">Update Country</button>
-                    </form>
-                </div>
+            
+            <legend className="text-center">Update section</legend>
+            <form className="d-flex flex-column" onSubmit={handleSubmit}>
+                <label>Title:</label>
+                <input value={title}
+                    onChange={(e) => { setTitle(e.target.value) }} /> <br />
+                <label>Season weather:</label>
+                <input value={season_weather}
+                   onChange={(e) => { setSeason_weather(e.target.value) }} /> <br />
+                <button type="submit" className="upaddbtn btn btn-dark">Update Country</button>
+            </form>
+            </div>
             </div>
         </div>
-    );
+);
 }
 export default EditCountry;

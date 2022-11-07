@@ -12,7 +12,7 @@ function Header(){
             <div className="navbar-collapse collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     <li className="nav-item"><Link className="nav-link" to="/ " style={{color:"orange"}}>Countries</Link></li>
-                    <li className="nav-item"><Link className="nav-link" to="/towns" style={{color:"orange"}}>Towns</Link></li>
+                    <li className="nav-item"><Link className="nav-link" to="/hotels" style={{color:"orange"}}>Hotels</Link></li>
                     <li className="nav-item"><Link className="nav-link" to="/customers" style={{color:"orange"}}>Customers</Link></li>
                 </ul>
             </div>

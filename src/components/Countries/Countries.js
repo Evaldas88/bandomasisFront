@@ -4,11 +4,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate} from "react-router-dom";
 
 
- function Countries() {
+function Countries() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [countries, setCountries] = useState([]);
-	const navigate = useNavigate();
+
     useEffect(() => {
         getCountries();
     }, [])
@@ -39,7 +39,11 @@ import { Link, useNavigate} from "react-router-dom";
             }
         );
     }
- 
+
+    const editCountry = id => {
+        window.location = '/editCountry/' + id
+    }
+
     if (!isLoaded) {
         return <div>Loading...</div>;
     } else if (error) {
@@ -48,7 +52,7 @@ import { Link, useNavigate} from "react-router-dom";
         return (
             <>
                 <button className="btn btn-dark addbtn">
-                    <Link className="link" to="/AddCountry">
+                    <Link className="link" to="/addCountry">
                          Add Country
                     </Link>
                 </button>
@@ -58,8 +62,7 @@ import { Link, useNavigate} from "react-router-dom";
                             <tr>
                                 <th>Country ID</th>
                                 <th>Country</th>
-                                <th>Description</th>
-                                <th>Distance Km</th>
+                                <th>Weather of seasons</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -68,14 +71,13 @@ import { Link, useNavigate} from "react-router-dom";
                                 <tr key={country.id}>
                                     <td>{country.id}</td>
                                     <td>{country.title}</td>
-                                    <td>{country.description}</td>
-                                    <td>{country.distance}</td>
+                                    <td>{country.season_weather}</td>
                                     <td>
                                         <button onClick={() => deleteCountry(country.id)}
                                             className="btn btn-dark">
                                              Delete
                                         </button>
-                                        <button onClick={() => navigate(`/EditCountry/${country.id}`)} 
+                                        <button onClick={() => editCountry(country.id)} 
                                             className="btn btn-dark">
                                              Edit
                                         </button>

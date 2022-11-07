@@ -6,16 +6,16 @@ import { Link, useNavigate } from "react-router-dom";
 function Towns() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
-    const [towns, setTowns] = useState([]);
+    const [hotels, setHotels] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/town")
+        fetch("http://127.0.0.1:8000/api/hotel")
             .then((res) => res.json())
             .then(
                 (result) => {
                     console.log(result); // <--- check this out in the console
-                    setTowns(result);
+                    setHotels(result);
                     setIsLoaded(true);
                 },
                 (error) => {
@@ -25,14 +25,14 @@ function Towns() {
             );
     }, []);
 
-    function deleteTown(id) {
-        fetch("http://127.0.0.1:8000/api/town/" + id, { method: "DELETE" })
+    function deleteHotel(id) {
+        fetch("http://127.0.0.1:8000/api/hotel/" + id, { method: "DELETE" })
         .then(
             (response) => {
                 console.log(response);
                 if (response.status === 204) {
-                    const remaining = towns.filter((p) => id !== p.id);
-                    setTowns(remaining);
+                    const remaining = hotels.filter((p) => id !== p.id);
+                    setHotels(remaining);
                     alert("Deleted successful.");
                 } else {
                     alert("Delete not successful, because this town has asigned customers. Please delete customers first.");
@@ -41,8 +41,8 @@ function Towns() {
         );
     }
 
-    const editTown = id => {
-        navigate   ('/editTown/' + id)
+    const editHotel = id => {
+        navigate   ('/editHotel/' + id)
     }
 
     if (!isLoaded) {
@@ -53,35 +53,39 @@ function Towns() {
         return (
             <>
                 <button className="btn btn-dark addbtn">
-                    <Link className="link" to="/addTown">
-                         Add Town
+                    <Link className="link" to="/addHotel">
+                         Add Hotel
                     </Link>
                 </button>
                 <div className="container">
                     <table className="table">
                         <thead>
                             <tr>
-                                <th>Town ID</th>
-                                <th>Town</th>
-                                <th>population</th>
-                                 <th>Country</th>
+                            <th>Hotel ID</th>
+                                <th>Hotel</th>
+                                <th>Distance km</th>
+                                <th>Days</th>
+                                <th>Price EUR</th>
+                                <th>Country</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {towns.map((town) => (
-                                <tr key={town.id}>
-                                    <td>{town.id}</td>
-                                    <td>{town.town_title}</td>
-                                    <td>{town.population}</td>
-                                      <td>{town.title}</td>
+                            {hotels.map((hotel) => (
+                                <tr key={hotel.id}>
+                                    <td>{hotel.id}</td>
+                                    <td>{hotel.hotel_title}</td>
+                                    <td>{hotel.distance}</td>
+                                    <td>{hotel.days}</td>
+                                    <td>{hotel.price}</td>
+                                      <td>{hotel.title}</td>
                                     <td>
                                         <button
-                                            onClick={() => deleteTown(town.id)}
+                                            onClick={() => deleteHotel(hotel.id)}
                                             className="btn btn-dark">
                                              Delete
                                         </button>
-                                        <button onClick={() => editTown(town.id)} 
+                                        <button onClick={() => editHotel(hotel.id)} 
                                             className="btn btn-dark">
                                              Edit
                                         </button>

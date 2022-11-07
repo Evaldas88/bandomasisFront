@@ -7,9 +7,7 @@ class AddCountry extends React.Component {
         this.state = {
             countries: [],
             title: "",
-            description: "",
-            distance: "",
-
+            season_weather: "",
         };
         this.create = this.create.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -25,8 +23,8 @@ class AddCountry extends React.Component {
             },
             body: JSON.stringify({
                 title: this.state.title,
-                description: this.state.description,
-                distance: this.state.distance,
+                season_weather: this.state.season_weather,
+          
             }),
         })
             .then((response) => response.json())
@@ -61,32 +59,21 @@ class AddCountry extends React.Component {
                                 />
                             </label>
                             <label htmlFor="description">
-                            Description:
+                                Season weather:
                                 <textarea
                                 rows="2" cols="60"
                                     name="description"
                                     id="description"
                                     type="text"
-                                    className="form-control  "
-                                    value={this.state.description}
+                                    className="form-control weather"
+                                    value={this.state.season_weather}
                                     onChange={(e) =>
-                                        this.handleChange({ description: e.target.value })
+                                        this.handleChange({ season_weather: e.target.value })
                                     }
                                     required
                                 />
                             </label>
-                            <label htmlFor="title">
-                            distance:
-                                <input
-                                    name="distance"
-                                    id="distance"
-                                    type="text"
-                                    className="form-control"
-                                    value={this.state.distance}
-                                    onChange={(e) => this.handleChange({ distance: e.target.value })}
-                                    required
-                                />
-                            </label>
+                       
                             <button
                                 className="upaddbtn btn btn-dark"
                                 type="button"
