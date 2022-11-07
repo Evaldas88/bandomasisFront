@@ -10,11 +10,7 @@ function Towns() {
     const [hotels, setHotels] = useState([]);
     const navigate = useNavigate();
     const auth = useContext(AuthContext);
-    const hs = {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${auth.getToken()}`,
-      };
+     
  
 
       function deleteHotel(id) {

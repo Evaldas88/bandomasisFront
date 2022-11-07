@@ -38,7 +38,7 @@ function EditCountry() {
         fetch(`http://localhost:8000/api/v1/country/${id}`, {
             method: 'PUT',
             headers: hs,
-      body: JSON.stringify(data),
+             body: JSON.stringify(data),
         }).then((result) => {
             result.json().then((resp) => {
                 console.warn(resp)
