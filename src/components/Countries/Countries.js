@@ -8,25 +8,7 @@ function Countries() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [countries, setCountries] = useState([]);
     const auth = useContext(AuthContext);
-
-    useEffect(() => {
-        getCountries();
-    }, [])
-    function getCountries() {
-        fetch("http://127.0.0.1:8000/api/v1/country")
-            .then((res) => res.json())
-            .then(
-                (result) => {
-                    console.log(result); // <--- check this out in the console
-                    setCountries(result);
-                    setIsLoaded(true);
-                },
-                (error) => {
-                    setError(error);
-                    setIsLoaded(true);
-                }
-            );
-    }
+    
 
     function deleteCountry(id) {
         fetch("http://127.0.0.1:8000/api/v1/country/" + id, { method: "DELETE",
@@ -44,6 +26,25 @@ function Countries() {
         );
     }
 
+
+    useEffect(() => {
+        fetch("http://127.0.0.1:8000/api/v1/country")
+            .then((res) => res.json())
+            .then(
+                (result) => {
+                    console.log(result); // <--- check this out in the console
+                    setCountries(result);
+                    setIsLoaded(true);
+                },
+                (error) => {
+                    setError(error);
+                    setIsLoaded(true);
+                }
+            );
+    }, [isLoaded])
+
+
+
     const editCountry = id => {
         window.location = '/editCountry/' + id
     }
@@ -57,7 +58,7 @@ function Countries() {
             <>
                 <button className="btn btn-dark addbtn">
                     <Link className="link" to="/addCountry">
-                         Add Country
+                        Add Country
                     </Link>
                 </button>
                 <div className="container">
@@ -79,11 +80,11 @@ function Countries() {
                                     <td>
                                         <button onClick={() => deleteCountry(country.id)}
                                             className="btn btn-dark">
-                                             Delete
+                                            Delete
                                         </button>
-                                        <button onClick={() => editCountry(country.id)} 
+                                        <button onClick={() => editCountry(country.id)}
                                             className="btn btn-dark">
-                                             Edit
+                                            Edit
                                         </button>
                                     </td>
                                 </tr>

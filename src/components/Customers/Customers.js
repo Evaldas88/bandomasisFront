@@ -13,7 +13,7 @@ function Customers() {
         getCustomers();
     }, [])
     function getCustomers() {
-        fetch("http://127.0.0.1:8000/api/v1/customers")
+        fetch("http://localhost:8000/api/v1/customers")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -27,15 +27,17 @@ function Customers() {
     }
 
     function deleteCustomer(id) {
-        fetch("http://localhost:8000/api/v1/customers/" + id, { method: 'DELETE',
-        headers: {
+        fetch("http://localhost:8000/api/v1/customers/" + id, {
+            method: 'DELETE',
+             headers: {
             Accept: "application/json",
             Authorization: `Bearer ${auth.getToken()}`,
           },  })
             .then((response) => {
                 // console.log(response);
-                if (response.status === 204) {
-                    const remaining = customers.filter(p => id !== p.id)
+
+                if (response.status === 200) {
+            const remaining = customers.filter(p => id !== p.id)
                     setCustomer(remaining)
                     alert("Deleted successful.");
                 }

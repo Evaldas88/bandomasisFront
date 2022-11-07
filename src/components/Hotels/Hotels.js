@@ -40,13 +40,11 @@ function Towns() {
         .then(
             (response) => {
                 console.log(response);
-                if (response.status === 204) {
+                if (response.status === 200) {
                     const remaining = hotels.filter((p) => id !== p.id);
                     setHotels(remaining);
                     alert("Deleted successful.");
-                } else {
-                    alert("Delete not successful, because this town has asigned customers. Please delete customers first.");
-                }
+                }  
             }
         );
     }
