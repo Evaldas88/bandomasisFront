@@ -23,7 +23,6 @@ function EditCountry() {
                 (result) => {
                     setTitle(result.title)
                     setSeason_weather(result.season_weather)
-
                 }
             )
     }, [id])

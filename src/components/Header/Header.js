@@ -15,12 +15,12 @@ const Header = () => {
           <ul className="nav nav-pills">
             <li className="nav-item">
               <Link to="/" className="nav-link text-light">
-                country
+                Country
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/customers" className="nav-link text-light">
-              customers
+              Customers
               </Link>
             </li>
             <li className="nav-item">

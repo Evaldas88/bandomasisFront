@@ -8,29 +8,33 @@ function Countries() {
     const [isLoaded, setIsLoaded] = useState(false);
     const [countries, setCountries] = useState([]);
     const auth = useContext(AuthContext);
-    
+     const [status, setStatus] = useState(null);
 
     function deleteCountry(id) {
-        fetch("http://localhost:8000/api/v1/country/" + id,  { method: "DELETE",
+
+        fetch("http://127.0.0.1:8000/api/v1/country/" + id, { method: "DELETE",
         headers: {
-
             Accept: "application/json",
-
             Authorization: `Bearer ${auth.getToken()}`,
-
-          }, })
-          .then((response) => {
-            // console.log(response);
-
-            if (response.status === 200) {
-                    const remaining = countries.filter((p) => id !== p.id);
-                    setCountries(remaining);
-                    alert("Deleted successful.");
-                }
+          }, }).then(
+            (res) => {
+              if (res.status === 200 || res.status === 201) {
+                const remaining = countries.filter((p) => id !== p.id);
+                setCountries(remaining);
+                 setStatus({ message: res.statusText });
+               } else if (res.status === 401) {
+                setStatus({ message: res.statusText });
+              } else if (res.status === 422) {
+                setStatus({ message: res.statusText });
+              }
+            },
+            (err) => {
+              setStatus(err);
+ 
             }
-        );
-    }
-
+          );
+        };
+ 
 
     useEffect(() => {
         fetch("http://localhost:8000/api/v1/country")
@@ -50,9 +54,7 @@ function Countries() {
 
 
 
-    const editCountry = id => {
-        window.location = '/editCountry/' + id
-    }
+   
 
     if (!isLoaded) {
         return <div>Loading...</div>;
@@ -66,6 +68,9 @@ function Countries() {
                         Add Country
                     </Link>
                 </button>
+                <div className="my-2 text-danger">
+                {status === null ? "" : status.message}
+              </div>
                 <div className="container">
                     <table className="table">
                         <thead>
@@ -87,10 +92,7 @@ function Countries() {
                                             className="btn btn-dark">
                                             Delete
                                         </button>
-                                        <button onClick={() => editCountry(country.id)}
-                                            className="btn btn-dark">
-                                            Edit
-                                        </button>
+                                        <Link to={'/editCountry/' + country.id} className="btn btn-primary   me-3">Edit</Link>
                                     </td>
                                 </tr>
                             ))}

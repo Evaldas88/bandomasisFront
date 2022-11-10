@@ -32,6 +32,8 @@ function EditCustomer() {
                 }
             )
     }, [id])
+
+    
     const handleSubmit = event => {
         event.preventDefault();
         var data = {

@@ -1,58 +1,71 @@
-import React from "react";
-import {Link} from 'react-router-dom';
-//  import { AuthContext } from "../../components/Admin/AuthContext";
 
-class AddTown extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            towns: [],
-            town_title: "",
-            distance: "",
-            days: "",
-            price: "",
-            country_id: "",
-            
-        };
-        this.create = this.create.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../../components/Admin/AuthContext";
 
-    create(e) {
-        fetch("http://127.0.0.1:8000/api/v1/hotel/", {
+
+const AddTown = () => {
+    const auth = useContext(AuthContext);
+    const [data, setData] = useState({
+        town_title: "",
+        distance: "",
+        days: "",
+        price: "",
+        country_id: "",
+
+    });
+    const [status, setStatus] = useState(null);
+    const navigate = useNavigate();
+    const hs = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.getToken()}`,
+    };
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(data);
+        fetch("http://127.0.0.1:8000/api/v1/hotel", {
             method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify({
-                hotel_title: this.state.hotel_title,
-                distance: this.state.distance,
-                days: this.state.days,
-                price: this.state.price,
-                country_id: this.state.country_id,
-            }),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                console.log(response);
-                // window.location.href = '/towns';
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        e.preventDefault();
+            headers: hs,
+            body: JSON.stringify(data),
+        }).then(
+            (res) => {
+                if (res.status === 200 || res.status === 201) {
+                    navigate('/hotels');
+                    setStatus({ message: res.statusText });
+                } else if (res.status === 401) {
+                    setStatus({ message: res.statusText });
+                } else if (res.status === 422) {
+                    setStatus({ message: res.statusText });
+                }
+            },
+            (err) => {
+                setStatus(err);
+            }
+        );
     }
-    handleChange(changeObject) {
-        this.setState(changeObject);
-    }
-    render() {
-        
-        return (
-            <div className="container">
+    const [country, setCountry] = useState([]);
+
+    useEffect(() => {
+        fetch("http://127.0.0.1:8000/api/v1/country")
+            .then((res) => res.json())
+            .then(
+                (result) => {
+                    setCountry(result);
+                    console.log(result)
+                }
+            );
+    }, []);
+
+
+
+    return (
+        <div className="container">
             <div className="row justify-content-center">
                 <div className="col-md-4">
-                    <form className="d-flex flex-column">
+                    <form className="d-flex flex-column" onSubmit={handleSubmit}>
                         <legend className="text-center">Add Hotel</legend>
                         <label htmlFor="town_title">
                             Title:
@@ -61,80 +74,62 @@ class AddTown extends React.Component {
                                 id="hotel_title"
                                 type="text"
                                 className="form-control"
-                                value={this.state.hotel_title}
-                                onChange={(e) => this.handleChange({ hotel_title: e.target.value })}
+                                onChange={(e) => setData({ ...data, hotel_title: e.target.value })}
                                 required
                             />
                         </label>
                         <label htmlFor="distance">
-                        Distance km:
+                            Distance km:
                             <input
                                 name="distance"
                                 id="distance"
                                 type="text"
                                 className="form-control"
-                                value={this.state.distance}
-                                onChange={(e) =>
-                                    this.handleChange({ distance: e.target.value })
-                                }
+                                onChange={(e) => setData({ ...data, distance: e.target.value })}
                                 required
                             />
                         </label>
                         <label htmlFor="days">
-                        Days:
+                            Days:
                             <input
                                 name="days"
                                 id="days"
                                 type="number"
                                 className="form-control"
-                                value={this.state.days}
-                                onChange={(e) =>
-                                    this.handleChange({ days: e.target.value })
-                                }
+                                onChange={(e) => setData({ ...data, days: e.target.value })}
+
                                 required
                             />
                         </label>
                         <label htmlFor="price">
-                        Price EUR:
+                            Price EUR:
                             <input
                                 name="price"
                                 id="price"
                                 type="number"
                                 className="form-control"
-                                value={this.state.price}
-                                onChange={(e) =>
-                                    this.handleChange({ price: e.target.value })
-                                }
+                                onChange={(e) => setData({ ...data, price: e.target.value })}
+
                                 required
                             />
                         </label>
                         <label htmlFor="country_id">
-                        Country id:
-                            <input
-                                name="country_id"
-                                id="country_id"
-                                type="text"
-                                className="form-control"
-                                value={this.state.country_id}
-                                onChange={(e) =>
-                                    this.handleChange({ country_id: e.target.value })
-                                }
-                                required
-                            />
+                            Country
+                            <select
+                                onChange={(e) => setData({ ...data, country_id: e.target.value })}>
+                                {country.map((country) => (
+                                    <option key={country.id} value={country.id}>
+                                        {country.title}
+                                    </option>
+                                ))}
+                            </select>
                         </label>
-                        <button
-                            className="upaddbtn btn btn-dark"
-                            type="button"
-                            onClick={(e) => this.create(e)}
-                        >
-                            Add
-                        </button>
-                        </form>
-                        <div><Link className="mt-3 btn btn-dark" to="/hotels">Go back</Link></div>
-                    </div>
+                        <button className="upaddbtn btn btn-dark"> Add</button>
+                    </form>
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
+
 export default AddTown;

@@ -1,54 +1,75 @@
-import React from "react";
-import {Link} from 'react-router-dom';
  
-class AddCustomer extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            customers: [],
-            name: "",
-            surname: "",
-            email: "",
-            phone: "",
-            hotel_id: "",
-                };
-        this.create = this.create.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../../components/Admin/AuthContext";
+ 
+
+const AddCustomer = () => {
+ 
+    const auth = useContext(AuthContext);
+     const [data, setData] = useState({
+        name: "",
+        surname: "",
+        email: "",
+        phone: "",
+        hotel_id: "",
+
+    });
+    const [status, setStatus] = useState(null);
+     const navigate = useNavigate();
+    const hs = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${auth.getToken()}`,
+    };
+
   
-    create(e) {
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(data);
         fetch("http://127.0.0.1:8000/api/v1/customers", {
             method: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-            body: JSON.stringify({
-                name: this.state.name,
-                surname: this.state.surname,
-                email: this.state.email,
-                phone: this.state.phone,
-                hotel_id: this.state.hotel_id,
-                        }),
-        })
-            .then((response) => response.json())
-            .then((response) => {
-                console.log(response);
-             })
-            .catch((err) => {
-                console.log(err);
-            });
-        e.preventDefault();
+            headers: hs,
+            body: JSON.stringify(data),
+        }).then(
+            (res) => {
+                if (res.status === 200 || res.status === 201) {
+                    navigate('/customers');
+                    setStatus({ message: res.statusText });
+                } else if (res.status === 401) {
+                    setStatus({ message: res.statusText });
+                } else if (res.status === 422) {
+                    setStatus({ message: res.statusText });
+                }
+            },
+            (err) => {
+                setStatus(err);
+            }
+        );
     }
-    handleChange(changeObject) {
-        this.setState(changeObject);
-    }
-    render() {
+
+
+    const [hotels, setHotels] = useState([]);
+
+    useEffect(() => {
+        fetch("http://127.0.0.1:8000/api/v1/hotel")
+            .then((res) => res.json())
+            .then(
+                (result) => {
+                    setHotels(result);
+                    console.log(result)
+                 }
+            );
+    }, []);
+
+
+ 
         return (
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-4">
-                        <form className="d-flex flex-column">
+                        <form className="d-flex flex-column" onSubmit={handleSubmit}>
                             <legend className="text-center">Add Customer</legend>
                             <label htmlFor="name">
                                 Name:
@@ -57,81 +78,78 @@ class AddCustomer extends React.Component {
                                     id="name"
                                     type="text"
                                     className="form-control"
-                                    value={this.state.name}
-                                    onChange={(e) => this.handleChange({ name: e.target.value })}
+                                    onChange={(e) => setData({ ...data, name: e.target.value })}
                                     required
                                 />
                             </label>
                             <label htmlFor="surname">
-                            Surname:
+                                Surname:
                                 <input
                                     name="surname"
                                     id="surname"
                                     type="text"
                                     className="form-control"
-                                    value={this.state.surname}
-                                    onChange={(e) =>
-                                        this.handleChange({ surname: e.target.value })
-                                    }
+                                    onChange={(e) => setData({ ...data, surname: e.target.value })}
                                     required
                                 />
                             </label>
                             <label htmlFor="email">
-                            Email:
+                                Email:
                                 <input
                                     name="email"
                                     id="email"
                                     type="email"
                                     className="form-control"
-                                    value={this.state.email}
-                                    onChange={(e) =>
-                                        this.handleChange({ email: e.target.value })
-                                    }
+                                    value={data.email}
+                                    onChange={(e) => setData({ ...data, email: e.target.value })}
                                     required
                                 />
                             </label>
                             <label htmlFor="phone">
-                            Phone:
+                                Phone:
                                 <input
                                     name="phone"
                                     id="phone"
                                     type="number"
                                     className="form-control"
-                                    value={this.state.phone}
-                                    onChange={(e) =>
-                                        this.handleChange({ phone: e.target.value })
-                                    }
+                                    onChange={(e) => setData({ ...data, phone: e.target.value })}
                                     required
                                 />
                             </label>
                             <label htmlFor="hotel_id">
-                            Hotel id:
-                            <input
+                                Hotel
+                                <select  
+                                    onChange={(e) => setData({ ...data, hotel_id: e.target.value })}>
+                                    {hotels.map((hotel) => (
+                                        <option key={ hotel.id} value={hotel.id}>
+                                            {hotel.hotel_title}
+                                        </option>
+                                    ))}
+                                </select>
+                                {/* <input
                                     name="hotel_id"
                                     id="hotel_id"
                                     type="number"
                                     className="form-control"
-                                    value={this.state.hotel_id}
-                                    onChange={(e) =>
-                                        this.handleChange({ hotel_id: e.target.value })
-                                    }
+                                    value={data.hotel_id}
+                                    onChange={(e) => setData({ ...data, hotel_id: e.target.value })}
                                     required
-                                />
+                                /> */}
                             </label>
+
+                            {/* <Link className="upaddbtn btn btn-dark" to="/customers">Add</Link>  */}
                             <button
                                 className="upaddbtn btn btn-dark"
-                                type="button"
-                                onClick={(e) => this.create(e)}
                             >
                                 Add
                             </button>
                         </form>
-                        <div><Link className="mt-3 btn btn-dark" to="/customers">Go back</Link></div>
+
 
                     </div>
                 </div>
             </div>
         );
     }
-}
+ 
 export default AddCustomer;

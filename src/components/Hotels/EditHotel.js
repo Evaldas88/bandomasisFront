@@ -29,6 +29,7 @@ function EditTown() {
                     setDays(result.days)
                     setPrice(result.price)
                     setCountry_id(result.country_id)
+                    console.log(result)
                 }
             )
     }, [id])
