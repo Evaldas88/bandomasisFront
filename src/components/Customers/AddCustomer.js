@@ -100,8 +100,7 @@ const AddCustomer = () => {
                                     id="email"
                                     type="email"
                                     className="form-control"
-                                    value={data.email}
-                                    onChange={(e) => setData({ ...data, email: e.target.value })}
+                                     onChange={(e) => setData({ ...data, email: e.target.value })}
                                     required
                                 />
                             </label>
@@ -126,15 +125,7 @@ const AddCustomer = () => {
                                         </option>
                                     ))}
                                 </select>
-                                {/* <input
-                                    name="hotel_id"
-                                    id="hotel_id"
-                                    type="number"
-                                    className="form-control"
-                                    value={data.hotel_id}
-                                    onChange={(e) => setData({ ...data, hotel_id: e.target.value })}
-                                    required
-                                /> */}
+                       
                             </label>
 
                             {/* <Link className="upaddbtn btn btn-dark" to="/customers">Add</Link>  */}
